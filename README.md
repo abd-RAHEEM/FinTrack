@@ -86,10 +86,8 @@ FinTrack is a smart personal finance tracking web application. It allows users t
 
 ## 📌 To-Do
 
-* Add user authentication
-* Integrate expense graphs
-* Export data as CSV
-* Cloud deployment (Render / Vercel / Railway)
+* connect with MongoDB
+
 
 ---
 
