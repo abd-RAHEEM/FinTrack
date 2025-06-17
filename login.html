@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Finance Tracker</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .error { color: red; margin-top: 5px; }
+        .forgot-password { float: right; font-size: 0.9em; }
+        .loading { display: none; }
+        .debug-info { 
+            display: none; 
+            background: #f8f8f8; 
+            padding: 10px; 
+            margin-top: 10px; 
+            border-radius: 5px; 
+            color: #333;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        #loginButton { position: relative; }
+        #loadingSpinner { position: absolute; left: 50%; transform: translateX(-50%); }
+    </style>
+</head>
+<body>
+    <div class="video-background">
+        <video autoplay muted loop>
+            <source src="background.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="login-container">
+        <h2>Login to FinTrack</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <a href="forgot-password.html" class="forgot-password">Forgot Password?</a>
+            <div id="errorMessage" class="error"></div>
+            <button type="submit" id="loginButton">
+                <span id="buttonText">Login</span>
+                <span id="loadingSpinner" class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </span>
+            </button>
+            <button type="button" id="debugToggle" style="margin-top: 10px; background: #444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                Show Debug Info
+            </button>
+            <div id="debugInfo" class="debug-info"></div>
+        </form>
+        <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+    </div>
+
+    <!-- ... Keep your head and style section unchanged ... -->
+
+<script>
+    document.getElementById("debugToggle").addEventListener("click", function() {
+        const debugInfo = document.getElementById("debugInfo");
+        debugInfo.style.display = debugInfo.style.display === "block" ? "none" : "block";
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const errorElement = document.getElementById("errorMessage");
+        const buttonText = document.getElementById("buttonText");
+        const loadingSpinner = document.getElementById("loadingSpinner");
+        const loginButton = document.getElementById("loginButton");
+        const debugInfo = document.getElementById("debugInfo");
+
+        errorElement.textContent = "";
+        buttonText.style.display = "none";
+        loadingSpinner.style.display = "inline-block";
+        loginButton.disabled = true;
+        debugInfo.textContent = "Attempting login...\n\n";
+
+        const loginData = {
+            username: document.getElementById("username").value.trim(),
+            password: document.getElementById("password").value
+        };
+
+        try {
+            debugInfo.textContent += `Sending request with data:\n${JSON.stringify(loginData, null, 2)}\n\n`;
+
+            const response = await fetch("http://127.0.0.1:5000/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify(loginData) // ✅ corrected
+            });
+
+            debugInfo.textContent += `Response status: ${response.status}\n`;
+
+            if (response.status === 405) {
+                throw new Error("Server doesn't accept POST method. Check your backend implementation.");
+            }
+
+            const responseData = await response.json().catch(() => null);
+
+            if (responseData) {
+                debugInfo.textContent += `Response data:\n${JSON.stringify(responseData, null, 2)}\n`;
+            } else {
+                debugInfo.textContent += `Could not parse JSON response\n`;
+            }
+
+            if (!response.ok) {
+                throw new Error(responseData?.error || `Login failed with status ${response.status}`);
+            }
+
+            if (!responseData?.access_token || !responseData?.refresh_token || !responseData?.user) {
+                throw new Error("Server response is missing required authentication data");
+            }
+
+            localStorage.setItem("access_token", responseData.access_token);
+            localStorage.setItem("refresh_token", responseData.refresh_token);
+            localStorage.setItem("user", JSON.stringify(responseData.user));
+
+            debugInfo.textContent += "\nLogin successful! Redirecting...\n";
+            window.location.href = "index.html";
+
+        } catch (error) {
+            console.error("Login Error:", error);
+            errorElement.textContent = error.message;
+            debugInfo.textContent += `Error: ${error.message}\n\n`;
+
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+            localStorage.removeItem("user");
+
+        } finally {
+            buttonText.style.display = "inline-block";
+            loadingSpinner.style.display = "none";
+            loginButton.disabled = false;
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const token = localStorage.getItem('access_token');
+        const user = localStorage.getItem('user');
+
+        if (token && user) {
+            window.location.href = 'index.html';
+        }
+    });
+</script>
+
+</body>
+</html>

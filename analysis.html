@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fintrack - Financial Analysis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="analysis.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <span>Fintrack</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="transactions.html">Transactions</a></li>
+                <li><a href="analysis.html" class="active">Analysis</a></li>
+                <li><a href="support.html">Support</a></li>
+                <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-icon" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="auth-buttons" id="auth-buttons">
+                    <a href="login.html" class="btn-secondary">Log In</a>
+                    <a href="signup.html" class="btn-primary">Sign Up</a>
+                </div>
+                <div class="user-dropdown" id="user-dropdown">
+                    <div class="user-dropdown-toggle">
+                        <img src="./assets/user-avatar.png" alt="User" class="user-avatar" id="user-avatar">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="dropdown-menu">
+                        
+                        <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <h1>Financial Analysis</h1>
+        
+        <!-- Analysis Period Selector -->
+        <div class="analysis-period">
+            <div class="period-selector">
+                <label for="analysis-period">Analysis Period:</label>
+                <select id="analysis-period">
+                    <option value="1">Last Month</option>
+                    <option value="3" selected>Last 3 Months</option>
+                    <option value="6">Last 6 Months</option>
+                    <option value="12">Last Year</option>
+                    <option value="0">All Time</option>
+                </select>
+            </div>
+            <button class="btn-primary" id="refresh-analysis">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+        </div>
+
+        <!-- Key Metrics Section -->
+        <section class="metrics-section">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <h3>Total Income</h3>
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                <div class="metric-value" id="total-income">₹0.00</div>
+                <div class="metric-change positive" id="income-change">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>0%</span>
+                </div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-header">
+                    <h3>Total Expenses</h3>
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+                <div class="metric-value" id="total-expenses">₹0.00</div>
+                <div class="metric-change negative" id="expenses-change">
+                    <i class="fas fa-arrow-down"></i>
+                    <span>0%</span>
+                </div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-header">
+                    <h3>Net Savings</h3>
+                    <i class="fas fa-piggy-bank"></i>
+                </div>
+                <div class="metric-value" id="net-savings">₹0.00</div>
+                <div class="metric-change positive" id="savings-change">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>0%</span>
+                </div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-header">
+                    <h3>Savings Rate</h3>
+                    <i class="fas fa-percentage"></i>
+                </div>
+                <div class="metric-value" id="savings-rate">0%</div>
+                <div class="metric-change positive" id="rate-change">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>0%</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="analysis-charts">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h2>Income vs Expenses</h2>
+                    <select id="cashflow-period">
+                        <option value="monthly">Monthly</option>
+                        <option value="weekly">Weekly</option>
+                    </select>
+                </div>
+                <canvas id="cashflow-chart"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h2>Expense Categories</h2>
+                </div>
+                <canvas id="category-chart"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h2>Budget vs Actual</h2>
+                </div>
+                <canvas id="budget-chart"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h2>Savings Trend</h2>
+                </div>
+                <canvas id="savings-chart"></canvas>
+            </div>
+        </section>
+
+        <!-- Insights Section -->
+        <section class="insights-section">
+            <h2>Financial Insights</h2>
+            <div class="insights-container" id="insights-container">
+                <div class="empty-state">
+                    <i class="fas fa-chart-pie"></i>
+                    <p>No insights available yet</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top Expenses Section -->
+        <section class="top-expenses">
+            <h2>Top Expense Categories</h2>
+            <div class="expenses-list" id="expenses-list">
+                <div class="empty-state">
+                    <i class="fas fa-receipt"></i>
+                    <p>No expense data available</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Fintrack</span>
+                </div>
+                <p class="footer-tagline">Your personal finance companion for smarter money management</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-columns">
+                <div class="footer-column">
+                    <h3 class="footer-heading">Product</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="support.html">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3 class="footer-heading">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3 class="footer-heading">Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3 class="footer-heading">Newsletter</h3>
+                    <form class="newsletter-form">
+                        <p>Subscribe to our financial tips</p>
+                        <div class="input-group">
+                            <input type="email" placeholder="Your email" required>
+                            <button type="submit">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Fintrack. All rights reserved.</p>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <span>•</span>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script>
+        // Global configuration
+        const isLiveServer = window.location.port === '5500';
+        const API_BASE = isLiveServer ? 'http://127.0.0.1:5000' : '';
+        
+        // Global variables
+        let cashflowChart, categoryChart, budgetChart, savingsChart;
+        let analysisData = {};
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check auth state
+            const token = localStorage.getItem('access_token');
+            const user = localStorage.getItem('user');
+            
+            if (token && user) {
+                document.body.classList.add('logged-in');
+                const userData = JSON.parse(user);
+                if (userData.avatar) {
+                    document.getElementById('user-avatar').src = userData.avatar;
+                }
+            } else {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Initialize charts
+            initCharts();
+            
+            // Load data
+            loadAnalysisData();
+            
+            // Set up event listeners
+            document.getElementById('analysis-period').addEventListener('change', loadAnalysisData);
+            document.getElementById('cashflow-period').addEventListener('change', updateCashflowChart);
+            document.getElementById('refresh-analysis').addEventListener('click', loadAnalysisData);
+            
+            // User dropdown functionality
+            document.querySelector('.user-dropdown-toggle').addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.getElementById('user-dropdown').classList.toggle('active');
+            });
+            
+            document.addEventListener('click', function() {
+                document.getElementById('user-dropdown').classList.remove('active');
+            });
+            
+            document.getElementById('logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                logoutUser();
+            });
+        });
+        
+        // Initialize charts
+        function initCharts() {
+            // Cashflow Chart (Income vs Expenses)
+            const cashflowCtx = document.getElementById('cashflow-chart').getContext('2d');
+            cashflowChart = new Chart(cashflowCtx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Income',
+                            data: [],
+                            backgroundColor: '#10b981',
+                            borderColor: '#10b981',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Expenses',
+                            data: [],
+                            backgroundColor: '#ef4444',
+                            borderColor: '#ef4444',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#e2e8f0'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#e2e8f0',
+                                callback: function(value) {
+                                    return '₹' + value;
+                                }
+                            },
+                            grid: {
+                                color: '#334155'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#e2e8f0'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ₹' + context.raw.toFixed(2);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Category Chart (Pie/Doughnut)
+            const categoryCtx = document.getElementById('category-chart').getContext('2d');
+            categoryChart = new Chart(categoryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        data: [],
+                        backgroundColor: [
+                            '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444',
+                            '#ec4899', '#14b8a6', '#f97316', '#6366f1', '#d946ef'
+                        ],
+                        borderColor: '#0f172a',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#e2e8f0'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ₹${value.toFixed(2)} (${percentage}%)`;
+                                }
+                            }
+                        },
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                const dataArr = ctx.chart.data.datasets[0].data;
+                                const sum = dataArr.reduce((a, b) => a + b, 0);
+                                const percentage = (value * 100 / sum).toFixed(1) + "%";
+                                return percentage;
+                            },
+                            color: '#fff',
+                            font: {
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+            
+            // Budget Chart (Budget vs Actual)
+            const budgetCtx = document.getElementById('budget-chart').getContext('2d');
+            budgetChart = new Chart(budgetCtx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Budgeted',
+                            data: [],
+                            backgroundColor: '#3b82f6',
+                            borderColor: '#3b82f6',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Actual',
+                            data: [],
+                            backgroundColor: '#f59e0b',
+                            borderColor: '#f59e0b',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#e2e8f0'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#e2e8f0',
+                                callback: function(value) {
+                                    return '₹' + value;
+                                }
+                            },
+                            grid: {
+                                color: '#334155'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#e2e8f0'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ₹' + context.raw.toFixed(2);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Savings Trend Chart
+            const savingsCtx = document.getElementById('savings-chart').getContext('2d');
+            savingsChart = new Chart(savingsCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Net Savings',
+                        data: [],
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderColor: '#10b981',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#e2e8f0'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#e2e8f0',
+                                callback: function(value) {
+                                    return '₹' + value;
+                                }
+                            },
+                            grid: {
+                                color: '#334155'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#e2e8f0'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Net Savings: ₹' + context.raw.toFixed(2);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Load analysis data from backend
+        function loadAnalysisData() {
+            const period = document.getElementById('analysis-period').value;
+            const token = localStorage.getItem('access_token');
+            
+            showLoading(true);
+            
+            fetch(`${API_BASE}/api/financial-analysis?months=${period}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.error || `HTTP error! status: ${response.status}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Analysis data received:', data);
+                analysisData = data;
+                updateMetrics();
+                updateCharts();
+                updateInsights();
+                updateTopExpenses();
+            })
+            .catch(error => {
+                console.error('Error loading analysis data:', error);
+                showError('Failed to load analysis data: ' + error.message);
+            })
+            .finally(() => {
+                showLoading(false);
+            });
+        }
+        
+        // Update metrics display
+        function updateMetrics() {
+            const metrics = analysisData.metrics || {};
+            
+            // Update metric values
+            document.getElementById('total-income').textContent = formatCurrency(metrics.totalIncome || 0);
+            document.getElementById('total-expenses').textContent = formatCurrency(metrics.totalExpenses || 0);
+            document.getElementById('net-savings').textContent = formatCurrency(metrics.netSavings || 0);
+            document.getElementById('savings-rate').textContent = (metrics.savingsRate || 0).toFixed(1) + '%';
+            
+            // Update change indicators
+            updateChangeIndicator('income-change', metrics.incomeTrend);
+            updateChangeIndicator('expenses-change', metrics.expenseTrend);
+            updateChangeIndicator('savings-change', metrics.savingsTrend);
+            updateChangeIndicator('rate-change', metrics.rateTrend);
+        }
+        
+        // Update change indicator element
+        function updateChangeIndicator(elementId, trend) {
+            const element = document.getElementById(elementId);
+            if (!trend || !element) return;
+            
+            element.className = 'metric-change ' + trend.direction;
+            element.querySelector('span').textContent = trend.text;
+        }
+        
+        // Update all charts
+        function updateCharts() {
+            updateCashflowChart();
+            updateCategoryChart();
+            updateBudgetChart();
+            updateSavingsChart();
+        }
+        
+        // Update cashflow chart based on selected period
+        function updateCashflowChart() {
+            const period = document.getElementById('cashflow-period').value;
+            const chartData = period === 'weekly' ? 
+                analysisData.charts.cashflow : 
+                analysisData.charts.monthly;
+            
+            if (chartData && cashflowChart) {
+                cashflowChart.data.labels = chartData.labels;
+                cashflowChart.data.datasets[0].data = chartData.income;
+                cashflowChart.data.datasets[1].data = chartData.expenses;
+                cashflowChart.update();
+            }
+        }
+        
+        // Update category chart
+        function updateCategoryChart() {
+            if (analysisData.charts.category && categoryChart) {
+                categoryChart.data.labels = analysisData.charts.category.labels;
+                categoryChart.data.datasets[0].data = analysisData.charts.category.values;
+                categoryChart.update();
+            }
+        }
+        
+        // Update budget chart
+        function updateBudgetChart() {
+            if (analysisData.charts.budget && budgetChart) {
+                budgetChart.data.labels = analysisData.charts.budget.labels;
+                budgetChart.data.datasets[0].data = analysisData.charts.budget.budgeted;
+                budgetChart.data.datasets[1].data = analysisData.charts.budget.actual;
+                budgetChart.update();
+            }
+        }
+        
+        // Update savings chart
+        function updateSavingsChart() {
+            if (analysisData.charts.monthly && savingsChart) {
+                savingsChart.data.labels = analysisData.charts.monthly.labels;
+                
+                // Calculate net savings for each period
+                const netSavings = analysisData.charts.monthly.income.map((income, i) => {
+                    return income - (analysisData.charts.monthly.expenses[i] || 0);
+                });
+                
+                savingsChart.data.datasets[0].data = netSavings;
+                savingsChart.update();
+            }
+        }
+        
+        // Update insights section
+        function updateInsights() {
+            const insightsContainer = document.getElementById('insights-container');
+            
+            if (!analysisData.insights || analysisData.insights.length === 0) {
+                insightsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-chart-pie"></i>
+                        <p>No insights available yet</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            insightsContainer.innerHTML = '';
+            
+            analysisData.insights.forEach(insight => {
+                const insightElement = document.createElement('div');
+                insightElement.className = `insight ${insight.type}`;
+                insightElement.innerHTML = `
+                    <i class="fas fa-${getInsightIcon(insight.type)}"></i>
+                    <p>${insight.text}</p>
+                `;
+                insightsContainer.appendChild(insightElement);
+            });
+        }
+        
+        // Update top expenses section
+        function updateTopExpenses() {
+            const expensesList = document.getElementById('expenses-list');
+            
+            if (!analysisData.categoryBreakdown || analysisData.categoryBreakdown.length === 0) {
+                expensesList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-receipt"></i>
+                        <p>No expense data available</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            expensesList.innerHTML = '';
+            
+            analysisData.categoryBreakdown.forEach(category => {
+                const expenseItem = document.createElement('div');
+                expenseItem.className = 'expense-item';
+                expenseItem.innerHTML = `
+                    <div class="expense-category">
+                        <span class="category-color" style="background-color: ${category.color}"></span>
+                        <span>${category.name}</span>
+                    </div>
+                    <div class="expense-amount">${formatCurrency(category.amount)}</div>
+                    <div class="expense-progress">
+                        <div class="progress-bar" style="width: ${calculatePercentage(category.amount)}%; background-color: ${category.color}"></div>
+                    </div>
+                `;
+                expensesList.appendChild(expenseItem);
+            });
+        }
+        
+        // Logout user
+        function logoutUser() {
+            const token = localStorage.getItem('access_token');
+            
+            fetch(`${API_BASE}/api/logout`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Logout failed');
+                }
+                // Clear local storage and redirect
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            })
+            .catch(error => {
+                console.error('Logout error:', error);
+                // Still clear local storage even if API call fails
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            });
+        }
+        
+        // Helper function to show loading state
+        function showLoading(isLoading) {
+            const refreshBtn = document.getElementById('refresh-analysis');
+            if (isLoading) {
+                refreshBtn.disabled = true;
+                refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+            } else {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+            }
+        }
+        
+        // Helper function to show error message
+        function showError(message) {
+            const errorElement = document.createElement('div');
+            errorElement.className = 'error-message';
+            errorElement.innerHTML = `
+                <i class="fas fa-exclamation-circle"></i>
+                <span>${message}</span>
+            `;
+            
+            const container = document.querySelector('.container');
+            const firstChild = container.firstChild;
+            container.insertBefore(errorElement, firstChild);
+            
+            // Remove error after 5 seconds
+            setTimeout(() => {
+                errorElement.remove();
+            }, 5000);
+        }
+        
+        // Helper function to get icon for insight type
+        function getInsightIcon(type) {
+            switch(type) {
+                case 'positive': return 'check-circle';
+                case 'warning': return 'exclamation-triangle';
+                case 'info': return 'info-circle';
+                default: return 'info-circle';
+            }
+        }
+        
+        // Helper function to calculate percentage for progress bar
+        function calculatePercentage(amount) {
+            if (!analysisData.metrics || !analysisData.metrics.totalExpenses) return 0;
+            return Math.round((amount / analysisData.metrics.totalExpenses) * 100);
+        }
+        
+        // Helper function to format currency
+        function formatCurrency(amount) {
+            return '₹' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+    </script>
+</body>
+</html>

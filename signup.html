@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Finance Tracker</title>
+    <link rel="stylesheet" href="signup.css">
+    <style>
+        .error { color: red; margin-top: 5px; }
+        input { margin-bottom: 10px; width: 100%; padding: 8px; }
+    </style>
+</head>
+<body>
+    <div class="video-background">
+        <video autoplay muted loop>
+            <source src="background.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="signup-container">
+        <h2>Create Your Account</h2>
+        <form id="signupForm">
+            <input type="text" id="fullName" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password (min 8 chars)" required minlength="8">
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+            <div id="errorMessage" class="error"></div>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="login.html">Log In</a></p>
+    </div>
+
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const errorElement = document.getElementById("errorMessage");
+            errorElement.textContent = "";
+            
+            const formData = {
+                fullName: document.getElementById("fullName").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                username: document.getElementById("username").value.trim(),
+                password: document.getElementById("password").value,
+                confirmPassword: document.getElementById("confirmPassword").value
+            };
+
+            // Client-side validation
+            if (formData.password.length < 8) {
+                errorElement.textContent = "Password must be at least 8 characters";
+                return;
+            }
+            if (formData.password !== formData.confirmPassword) {
+                errorElement.textContent = "Passwords don't match";
+                return;
+            }
+
+            try {
+                const response = await fetch("http://localhost:5000/api/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(formData),
+                });
+
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || "Signup failed");
+                }
+                
+                alert("Account created successfully! Redirecting to login...");
+                window.location.href = "login.html";
+                
+            } catch (error) {
+                console.error("Signup Error:", error);
+                errorElement.textContent = error.message;
+            }
+        });
+    </script>
+</body>
+</html>

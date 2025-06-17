@@ -1,0 +1,398 @@
+/* Profile Page Styles */
+.profile-container {
+    padding: 2rem;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--dark-3);
+}
+
+.profile-header h1 {
+    font-size: 2rem;
+    color: var(--light-1);
+}
+
+.profile-content {
+    display: grid;
+    gap: 2rem;
+}
+
+.profile-section {
+    background-color: var(--dark-2);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--dark-3);
+}
+
+/* User Info Section */
+.user-info-section {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+}
+
+.profile-avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary);
+}
+
+.profile-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.profile-detail label {
+    font-size: 0.875rem;
+    color: var(--light-3);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.profile-detail p {
+    font-size: 1rem;
+    color: var(--light-1);
+    background-color: var(--dark-3);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin: 0;
+}
+
+/* Stats Section */
+.stats-section h2 {
+    margin-bottom: 1.5rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-card {
+    background-color: var(--dark-3);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.stat-icon i {
+    color: var(--primary);
+}
+
+.stat-info h3 {
+    font-size: 0.875rem;
+    color: var(--light-3);
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.stat-info p {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--light-1);
+}
+
+/* Calendar Section */
+.calendar-section h2 {
+    margin-bottom: 1.5rem;
+}
+
+#calendar {
+    background-color: var(--dark-1);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.fc {
+    color: var(--light-1);
+}
+
+.fc-header-toolbar {
+    margin-bottom: 1rem;
+}
+
+.fc-toolbar-title {
+    font-size: 1.25rem;
+    color: var(--light-1);
+}
+
+.fc-button {
+    background-color: var(--dark-3) !important;
+    border-color: var(--dark-4) !important;
+    color: var(--light-1) !important;
+}
+
+.fc-button:hover {
+    background-color: var(--dark-4) !important;
+}
+
+.fc-button-primary:not(:disabled).fc-button-active {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+.fc-daygrid-day {
+    background-color: var(--dark-2);
+    border-color: var(--dark-3) !important;
+}
+
+.fc-daygrid-day.fc-day-today {
+    background-color: rgba(37, 99, 235, 0.1);
+}
+
+.fc-daygrid-day-top {
+    color: var(--light-1);
+}
+
+.fc-daygrid-day-number {
+    color: var(--light-1);
+}
+
+.fc-daygrid-event {
+    font-size: 0.75rem;
+    padding: 2px 4px;
+    border-radius: 4px;
+    white-space: normal !important;
+}
+
+/* Day Details */
+.calendar-day-details {
+    background-color: var(--dark-3);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+}
+
+.day-summary h3 {
+    margin-bottom: 1rem;
+    color: var(--light-1);
+}
+
+.day-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.day-stat {
+    background-color: var(--dark-2);
+    border-radius: var(--radius);
+    padding: 1rem;
+    text-align: center;
+}
+
+.day-stat span {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--light-3);
+    margin-bottom: 0.5rem;
+}
+
+.day-stat strong {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.day-stat.income-stat strong {
+    color: var(--success);
+}
+
+.day-stat.expense-stat strong {
+    color: var(--danger);
+}
+
+.day-stat.net-stat strong {
+    color: var(--light-1);
+}
+
+.day-transactions {
+    background-color: var(--dark-2);
+    border-radius: var(--radius);
+    padding: 1rem;
+}
+
+.transactions-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.transactions-list th {
+    text-align: left;
+    padding: 0.75rem;
+    color: var(--light-3);
+    font-weight: 500;
+    font-size: 0.875rem;
+    border-bottom: 1px solid var(--dark-3);
+}
+
+.transactions-list td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--dark-3);
+}
+
+.transactions-list tr:last-child td {
+    border-bottom: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .user-info-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-avatar-container {
+        align-items: flex-start;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .day-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* Navbar Fixes for Profile Page */
+.navbar {
+    background-color: var(--dark-2);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid var(--dark-3);
+    box-shadow: var(--shadow);
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--light-1);
+    gap: 0.5rem;
+}
+
+.logo i {
+    color: var(--primary);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    margin: 0;
+}
+
+.nav-links a {
+    color: var(--light-2);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: var(--light-1);
+}
+
+.nav-links a.active {
+    color: var(--light-1);
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    color: var(--light-1);
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.btn-icon:hover {
+    color: var(--primary);
+}
+
+.user-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary);
+}
+.fc-daygrid-day:hover {
+    background-color: rgba(59, 130, 246, 0.1); /* light blue tint */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}

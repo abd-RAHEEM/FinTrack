@@ -1,0 +1,193 @@
+/* Support Page Specific Styles */
+.support-section {
+    background-color: var(--dark-2);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--dark-3);
+}
+
+.support-section .section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.support-section .section-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--light-1);
+}
+
+.support-section .section-header p {
+    color: var(--light-3);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.support-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.support-card {
+    background-color: var(--dark-2);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--dark-3);
+    box-shadow: var(--shadow);
+}
+
+.support-card .card-header {
+    padding: 1.5rem;
+    background-color: var(--dark-3);
+    border-bottom: 1px solid var(--dark-3);
+}
+
+.support-card .card-header h2 {
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--light-1);
+    margin: 0;
+}
+
+.support-card .card-header i {
+    color: var(--primary);
+}
+
+.support-card .card-body {
+    padding: 1.5rem;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.contact-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.contact-form label {
+    font-size: 0.875rem;
+    color: var(--light-3);
+    font-weight: 500;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--dark-4);
+    background-color: var(--dark-1);
+    color: var(--light-1);
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.contact-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.faq-item {
+    background-color: var(--dark-3);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-item h3 {
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+    color: var(--light-1);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    transition: background-color 0.2s;
+}
+
+.faq-item h3::after {
+    content: '+';
+    font-size: 1.25rem;
+    transition: transform 0.3s;
+}
+
+.faq-item.active h3::after {
+    content: '-';
+}
+
+.faq-item h3:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.faq-content {
+    padding: 0 1.25rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.faq-item.active .faq-content {
+    padding: 0 1.25rem 1.25rem;
+    max-height: 500px;
+}
+
+.faq-content p {
+    color: var(--light-3);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .support-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .support-section .section-header h1 {
+        font-size: 2rem;
+    }
+    
+    .support-card .card-body {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .support-section {
+        padding: 1rem;
+    }
+    
+    .support-section .section-header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .support-card .card-header {
+        padding: 1rem;
+    }
+}

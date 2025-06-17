@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fintrack - Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="profile.css">
+    <!-- Include FullCalendar CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+</head>
+<body class="logged-in">
+    <!-- Navigation Bar -->
+    <!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="navbar-container">
+        <div class="logo">
+            <i class="fas fa-chart-line"></i>
+            <span>Fintrack</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="transactions.html">Transactions</a></li>
+            <li><a href="analysis.html">Analysis</a></li>
+            <li><a href="support.html">Support</a></li>
+            <li><a href="profile.html" class="active"><i class="fas fa-user"></i> Profile</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="btn-icon" id="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <div class="auth-buttons" id="auth-buttons">
+                <a href="login.html" class="btn-secondary">Log In</a>
+                <a href="signup.html" class="btn-primary">Sign Up</a>
+            </div>
+            <div class="user-dropdown" id="user-dropdown">
+                <div class="user-dropdown-toggle">
+                    <img src="./assets/user-avatar.png" alt="User" class="user-avatar" id="user-avatar">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-menu">
+                    <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <!-- Main Content -->
+    <main class="container profile-container">
+        <div class="profile-header">
+            <h1>User Profile</h1>
+            <button class="btn-primary" id="edit-profile-btn">
+                <i class="fas fa-edit"></i> Edit Profile
+            </button>
+        </div>
+
+        <div class="profile-content">
+            <!-- User Info Section -->
+            <section class="profile-section user-info-section">
+                <div class="profile-avatar-container">
+                    <img src="./assets/user-avatar.png" alt="User Avatar" id="profile-avatar" class="profile-avatar">
+                    <button class="btn-secondary" id="change-avatar-btn">
+                        <i class="fas fa-camera"></i> Change Avatar
+                    </button>
+                </div>
+                <div class="profile-details">
+                    <div class="profile-detail">
+                        <label>Full Name</label>
+                        <p id="profile-fullname">Loading...</p>
+                    </div>
+                    <div class="profile-detail">
+                        <label>Username</label>
+                        <p id="profile-username">Loading...</p>
+                    </div>
+                    <div class="profile-detail">
+                        <label>Email</label>
+                        <p id="profile-email">Loading...</p>
+                    </div>
+                    <div class="profile-detail">
+                        <label>Member Since</label>
+                        <p id="profile-createdAt">Loading...</p>
+                    </div>
+                    <div class="profile-detail">
+                        <label>Last Login</label>
+                        <p id="profile-lastLogin">Loading...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Account Stats Section -->
+            <section class="profile-section stats-section">
+                <h2>Account Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Balance</h3>
+                            <p id="stat-balance">₹0.00</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Income</h3>
+                            <p id="stat-income">₹0.00</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Expenses</h3>
+                            <p id="stat-expenses">₹0.00</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Transactions</h3>
+                            <p id="stat-transactions">0</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calendar Section -->
+            <section class="profile-section calendar-section">
+                <h2>Daily Financial Overview</h2>
+                <div id="calendar"></div>
+                <div class="calendar-day-details" id="day-details">
+                    <div class="day-summary">
+                        <h3 id="selected-date">Select a date to view details</h3>
+                        <div class="day-stats">
+                            <div class="day-stat income-stat">
+                                <span>Income</span>
+                                <strong id="day-income">₹0.00</strong>
+                            </div>
+                            <div class="day-stat expense-stat">
+                                <span>Expenses</span>
+                                <strong id="day-expense">₹0.00</strong>
+                            </div>
+                            <div class="day-stat net-stat">
+                                <span>Net</span>
+                                <strong id="day-net">₹0.00</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="day-transactions" id="day-transactions">
+                        <p>No transactions for this day</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Fintrack</span>
+                </div>
+                <p class="footer-tagline">Your personal finance companion for smarter money management</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-columns">
+                <div class="footer-column">
+                    <h3 class="footer-heading">Product</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="support.html">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3 class="footer-heading">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3 class="footer-heading">Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3 class="footer-heading">Newsletter</h3>
+                    <form class="newsletter-form">
+                        <p>Subscribe to our financial tips</p>
+                        <div class="input-group">
+                            <input type="email" placeholder="Your email" required>
+                            <button type="submit">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Fintrack. All rights reserved.</p>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <span>•</span>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Include FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script>
+        // Global configuration
+        const isLiveServer = window.location.port === '5500';
+        const API_BASE = isLiveServer ? 'http://127.0.0.1:5000' : '';
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check auth state
+            const token = localStorage.getItem('access_token');
+            const user = localStorage.getItem('user');
+            
+            if (token && user) {
+                document.body.classList.add('logged-in');
+                const userData = JSON.parse(user);
+                if (userData.avatar) {
+                    document.getElementById('user-avatar').src = userData.avatar;
+                    document.getElementById('profile-avatar').src = userData.avatar;
+                }
+                // Load user data
+                loadUserProfile();
+                loadUserStats();
+                initCalendar();
+            } else {
+                // Redirect to login if not authenticated
+                window.location.href = 'login.html';
+            }
+            
+            // Set up event listeners
+            document.querySelector('.user-dropdown-toggle').addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.getElementById('user-dropdown').classList.toggle('active');
+            });
+            
+            document.addEventListener('click', function() {
+                document.getElementById('user-dropdown').classList.remove('active');
+            });
+            
+            document.getElementById('logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                logoutUser();
+            });
+
+            document.getElementById('edit-profile-btn').addEventListener('click', function() {
+                alert('Edit profile functionality will be implemented soon!');
+            });
+
+            document.getElementById('change-avatar-btn').addEventListener('click', function() {
+                alert('Change avatar functionality will be implemented soon!');
+            });
+        });
+
+        // Load user profile data
+        function loadUserProfile() {
+            const token = localStorage.getItem('access_token');
+            
+            fetch(`${API_BASE}/api/me`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load profile data');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const user = data.user;
+                document.getElementById('profile-fullname').textContent = user.fullName;
+                document.getElementById('profile-username').textContent = user.username;
+                document.getElementById('profile-email').textContent = user.email;
+                
+                if (user.avatar) {
+                    document.getElementById('profile-avatar').src = user.avatar;
+                }
+                
+                if (user.createdAt) {
+                    const createdAt = new Date(user.createdAt);
+                    document.getElementById('profile-createdAt').textContent = createdAt.toLocaleDateString();
+                }
+                
+                if (user.lastLogin) {
+                    const lastLogin = new Date(user.lastLogin);
+                    document.getElementById('profile-lastLogin').textContent = lastLogin.toLocaleString();
+                }
+            })
+            .catch(error => {
+                console.error('Error loading profile data:', error);
+                showError('Failed to load profile data');
+            });
+        }
+
+        // Load user financial stats
+        function loadUserStats() {
+            const token = localStorage.getItem('access_token');
+            
+            fetch(`${API_BASE}/api/dashboard`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load user stats');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const summary = data.summary;
+                document.getElementById('stat-balance').textContent = formatCurrency(summary.balance);
+                document.getElementById('stat-income').textContent = formatCurrency(summary.income);
+                document.getElementById('stat-expenses').textContent = formatCurrency(Math.abs(summary.expense));
+                
+                // Count total transactions (simplified - would need a separate endpoint for accurate count)
+                const transactionCount = data.recent_transactions ? data.recent_transactions.length : 0;
+                document.getElementById('stat-transactions').textContent = transactionCount;
+            })
+            .catch(error => {
+                console.error('Error loading user stats:', error);
+                showError('Failed to load financial statistics');
+            });
+        }
+
+        // Initialize calendar
+        function initCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,dayGridWeek,dayGridDay'
+                },
+                themeSystem: 'bootstrap5',
+                events: function(fetchInfo, successCallback, failureCallback) {
+                    fetchDailyFinancialData(fetchInfo.start, fetchInfo.end)
+                        .then(events => successCallback(events))
+                        .catch(error => failureCallback(error));
+                },
+                dateClick: function(info) {
+                    loadDayDetails(info.date);
+                },
+                eventDidMount: function(info) {
+                    // Customize event appearance based on type (income/expense)
+                    if (info.event.extendedProps.type === 'income') {
+                        info.el.style.backgroundColor = '#10b981';
+                        info.el.style.borderColor = '#10b981';
+                    } else if (info.event.extendedProps.type === 'expense') {
+                        info.el.style.backgroundColor = '#ef4444';
+                        info.el.style.borderColor = '#ef4444';
+                    }
+                }
+            });
+
+            calendar.render();
+        }
+
+        // Fetch daily financial data for calendar
+        function fetchDailyFinancialData(start, end) {
+            const token = localStorage.getItem('access_token');
+            
+            return fetch(`${API_BASE}/api/transactions/daily-summary?start=${start.toISOString()}&end=${end.toISOString()}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch daily summary');
+                }
+                return response.json();
+            })
+            .then(data => {
+                return data.daily_summary.map(day => {
+                    const net = day.income + day.expense;
+                    const title = `Income: ₹${day.income.toFixed(2)}\nExpenses: ₹${Math.abs(day.expense).toFixed(2)}\nNet: ₹${net.toFixed(2)}`;
+                    
+                    return {
+                        title: title,
+                        start: day.date,
+                        allDay: true,
+                        extendedProps: {
+                            type: net >= 0 ? 'income' : 'expense',
+                            income: day.income,
+                            expense: day.expense,
+                            net: net
+                        },
+                        color: net >= 0 ? '#10b981' : '#ef4444'
+                    };
+                });
+            });
+        }
+
+        // Load details for a specific day
+        function loadDayDetails(date) {
+            const token = localStorage.getItem('access_token');
+            const dateStr = date.toISOString().split('T')[0];
+            
+            document.getElementById('selected-date').textContent = date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Show loading state
+            document.getElementById('day-income').textContent = 'Loading...';
+            document.getElementById('day-expense').textContent = 'Loading...';
+            document.getElementById('day-net').textContent = 'Loading...';
+            document.getElementById('day-transactions').innerHTML = '<p>Loading transactions...</p>';
+
+            // Fetch day summary
+            const endDateStr = new Date(new Date(dateStr).getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+            fetch(`${API_BASE}/api/transactions/daily-summary?start=${dateStr}&end=${endDateStr}`, {
+
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch day summary');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.daily_summary.length > 0) {
+                    const day = data.daily_summary[0];
+                    const net = day.income + day.expense;
+                    
+                    document.getElementById('day-income').textContent = formatCurrency(day.income);
+                    document.getElementById('day-expense').textContent = formatCurrency(Math.abs(day.expense));
+                    document.getElementById('day-net').textContent = formatCurrency(net);
+                } else {
+                    document.getElementById('day-income').textContent = '₹0.00';
+                    document.getElementById('day-expense').textContent = '₹0.00';
+                    document.getElementById('day-net').textContent = '₹0.00';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading day summary:', error);
+                document.getElementById('day-income').textContent = '₹0.00';
+                document.getElementById('day-expense').textContent = '₹0.00';
+                document.getElementById('day-net').textContent = '₹0.00';
+            });
+
+            // Fetch day transactions
+            fetch(`${API_BASE}/api/transactions?date=${dateStr}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch day transactions');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const transactions = data.transactions || [];
+                const transactionsContainer = document.getElementById('day-transactions');
+                
+                if (transactions.length === 0) {
+                    transactionsContainer.innerHTML = '<p>No transactions for this day</p>';
+                    return;
+                }
+                
+                let html = '<div class="transactions-list"><table><thead><tr><th>Description</th><th>Category</th><th>Amount</th></tr></thead><tbody>';
+                
+                transactions.forEach(transaction => {
+                    const amountClass = transaction.type === 'income' ? 'income' : 'expense';
+                    const amountSign = transaction.type === 'income' ? '+' : '-';
+                    const amount = Math.abs(transaction.amount).toFixed(2);
+                    
+                    html += `
+                        <tr>
+                            <td>${transaction.description}</td>
+                            <td><span class="category-badge ${transaction.category}">${transaction.category}</span></td>
+                            <td class="amount ${amountClass}">${amountSign}₹${amount}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table></div>';
+                transactionsContainer.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error loading day transactions:', error);
+                document.getElementById('day-transactions').innerHTML = '<p>Failed to load transactions</p>';
+            });
+        }
+
+        // Helper function to format currency
+        function formatCurrency(amount) {
+            return '₹' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+
+        // Helper function to show error message
+        function showError(message) {
+            const errorElement = document.createElement('div');
+            errorElement.className = 'error-message';
+            errorElement.innerHTML = `
+                <i class="fas fa-exclamation-circle"></i>
+                <span>${message}</span>
+            `;
+            
+            const container = document.querySelector('.container');
+            const firstChild = container.firstChild;
+            container.insertBefore(errorElement, firstChild);
+            
+            // Remove error after 5 seconds
+            setTimeout(() => {
+                errorElement.remove();
+            }, 5000);
+        }
+
+        // Logout user
+        function logoutUser() {
+            const token = localStorage.getItem('access_token');
+            const refreshToken = localStorage.getItem('refresh_token');
+            
+            fetch(`${API_BASE}/api/logout`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ refresh_token: refreshToken })
+            })
+            .then(response => {
+                // Clear local storage even if API call fails
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            })
+            .catch(error => {
+                console.error('Logout error:', error);
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            });
+        }
+    </script>
+</body>
+</html>
